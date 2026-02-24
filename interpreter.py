@@ -22,7 +22,8 @@ class Interpreter:
 
     def evaluate_value(self, value) -> int:
         if value.startswith("@"):
-            return value.strip("@")
+            new_value = value[1:]
+            return new_value
 
         elif value.isnumeric():
             new_value = int(value)
