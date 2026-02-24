@@ -21,7 +21,10 @@ class Interpreter:
         return "error"
 
     def evaluate_value(self, value) -> int:
-        if isinstance(value, str) and value.isnumeric():
+        if value.startswith("@"):
+            return value.strip("@")
+
+        elif value.isnumeric():
             new_value = int(value)
             return new_value
 
@@ -57,22 +60,21 @@ class Interpreter:
         new_value = self.evaluate_value(value)
         print(new_value)
 
-    def line_handler(self, line_type, line):
+    def line_handler(self, line_type, line, line_number):
         if line_type == "assignment":
             self.assignment(line)
 
         if line_type == "print":
             self.printing(line)
 
+        if line_type == "error":
+            raise Exception(f"Unknown instruction in line {line_number}: {line}")
+
     def interpret_lines(self, list_of_lines):
+        line_number = 1
         for line in list_of_lines:
             line_type = self.line_classification(line)
-            self.line_handler(line_type, line)
+            self.line_handler(line_type, line, line_number)
+            line_number += 1
 
 
-supported_statements = {"empty_line" : "",
-                           "comment" : "$",
-                           "print" : "print ->",
-                           "assignment" : "=",
-                           "operator" : "+"
-                           }
