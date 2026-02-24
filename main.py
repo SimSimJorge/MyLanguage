@@ -4,27 +4,28 @@
 # Pass lines to interpreter.
 
 # Filename = .ss (stands for sim sim)
-import os
+import sys
 from pathlib import Path
 import interpreter
 
-def get_dir() -> Path:
-    current_dir = Path(__file__).resolve().parent
-    return current_dir / "programs" / "math2.ss"
+def cli_handling() -> Path:
+    if len(sys.argv) > 1:
+        path = Path(__file__).parent / sys.argv[1]
+        return path
+    else: print("No arguments provided")
+    exit(1)
 
-file_to_run = get_dir()
-
-def file_exists():
+def file_exists(file_to_run):
     if not file_to_run.exists():
         print(f"File not found: {file_to_run}")
         exit(1)
 
-def file_correct_suffix():
+def file_correct_suffix(file_to_run):
     if not file_to_run.suffix == ".ss":
         print(f"Not a .ss file: {file_to_run}")
         exit(1)
 
-def read_lines() -> list:
+def read_lines(file_to_run) -> list:
     with open(file_to_run, "r") as file:
         list_of_lines = []
         for line in file:
@@ -35,9 +36,9 @@ interpreter = interpreter.Interpreter()
 
 
 if __name__ == '__main__':
-    print(f"Nice way: {file_to_run}")
-    file_exists()
-    file_correct_suffix()
-    lines = read_lines()
+    file_to_run = cli_handling()
+    file_exists(file_to_run)
+    file_correct_suffix(file_to_run)
+    lines = read_lines(file_to_run)
     interpreter.interpret_lines(lines)
 
