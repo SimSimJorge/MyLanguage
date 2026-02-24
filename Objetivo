@@ -1,0 +1,12 @@
+Run:
+x = 5
+y = x + 3
+print -> y
+
+Objetivo alcançado :)
+
+Outro teste:
+x = 10
+y = 12
+z = x + y
+print -> z
