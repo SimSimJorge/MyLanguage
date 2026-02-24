@@ -1,3 +1,4 @@
+import operator
 class Interpreter:
     def __init__(self):
         self.variables = {}
@@ -19,10 +20,6 @@ class Interpreter:
 
         return "error"
 
-    def addition(self, *values) -> int:
-        return sum(values)
-
-
     def evaluate_value(self, value) -> int:
         if isinstance(value, str) and value.isnumeric():
             new_value = int(value)
@@ -34,7 +31,17 @@ class Interpreter:
         elif "+" in value:
             expression_left = value.partition("+")[0].strip()
             expression_right = value.partition("+")[2].strip()
-            sum_value = self.addition(expression_left, expression_right)
+            left_value = self.evaluate_value(expression_left)
+            right_value = self.evaluate_value(expression_right)
+            sum_value = left_value + right_value
+            return sum_value
+
+        elif "-" in value:
+            expression_left = value.partition("-")[0].strip()
+            expression_right = value.partition("-")[2].strip()
+            left_value = self.evaluate_value(expression_left)
+            right_value = self.evaluate_value(expression_right)
+            sum_value = left_value - right_value
             return sum_value
 
         raise Exception("No value to store")
